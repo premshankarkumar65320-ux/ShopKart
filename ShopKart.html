@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopKart - Online Shopping</title>
+    <style>
+        :root {
+            --black: #000000;
+            --cyan: #00ffff;
+            --pink: #ff69b4;
+            --gray: #222222;
+            --white: #ffffff;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--black);
+            color: var(--white);
+        }
+        a {
+            color: var(--cyan);
+            text-decoration: none;
+        }
+        header {
+            background-color: var(--gray);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--pink);
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+        }
+        nav ul li a {
+            color: var(--white);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        nav ul li a:hover {
+            color: var(--cyan);
+        }
+        .search-bar {
+            margin-left: 1rem;
+            position: relative;
+        }
+        .search-bar input {
+            padding: 0.5rem 0.8rem;
+            border: 2px solid var(--pink);
+            border-radius: 4px;
+            background-color: var(--gray);
+            color: var(--white);
+            width: 200px;
+        }
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--cyan);
+        }
+        .login-btn, .cart-btn {
+            background-color: var(--pink);
+            color: var(--black);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .login-btn:hover, .cart-btn:hover {
+            background-color: var(--cyan);
+        }
+        .cart-count {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background-color: var(--pink);
+            color: var(--black);
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 0.75rem;
+        }
+        main {
+            padding: 2rem;
+        }
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, var(--black), var(--cyan));
+            color: var(--white);
+        }
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .product-card {
+            background-color: var(--gray);
+            border: 2px solid var(--cyan);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        .product-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        .product-info {
+            padding: 0.8rem;
+        }
+        .product-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--cyan);
+        }
+        .product-info p {
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-bottom: 0.5rem;
+        }
+        .product-info .price {
+            font-weight: bold;
+            color: var(--pink);
+        }
+        .product-card button {
+            background-color: var(--pink);
+            color: var(--black);
+            border: none;
+            padding: 0.5rem;
+            width: 100%;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .product-card button:hover {
+            background-color: var(--cyan);
+        }
+        .categories-section {
+            margin-top: 3rem;
+            padding: 2rem;
+            background-color: var(--gray);
+            border-radius: 8px;
+        }
+        .categories-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--cyan);
+        }
+        .category-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .category-item {
+            background-color: var(--gray);
+            border: 2px solid var(--cyan);
+            padding: 0.6rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .category-item:hover {
+            background-color: var(--cyan);
+            color: var(--black);
+        }
+        .contact-section {
+            margin-top: 3rem;
+            padding: 2rem;
+            background-color: var(--gray);
+            border-radius: 8px;
+            text-align: center;
+        }
+        .contact-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--cyan);
+        }
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: var(--gray);
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .search-bar input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">ShopKart</div>
+        <nav class="nav">
+            <ul>
+                <li><a href="#">Electronics</a></li>
+                <li><a href="#">Fashion</a></li>
+                <li><a href="#">Home & Kitchen</a></li>
+                <li><a href="#">Sports</a></li>
+            </ul>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search products...">
+            </div>
+            <button class="login-btn" id="loginBtn">Login</button>
+            <button class="cart-btn" id="cartBtn">Cart <span class="cart-count">0</span></button>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Welcome to ShopKart</h1>
+            <p>Discover the latest products with style and ease. Shop now and enjoy premium service.</p>
+        </section>
+
+        <section class="products-section">
+            <h2 style="text-align:center; margin-bottom:1.5rem;">Featured Products</h2>
+            <div class="products-grid" id="productsGrid"></div>
+        </section>
+
+        <section class="categories-section">
+            <h2>Categories</h2>
+            <div class="category-list" id="categoryList">
+                <div class="category-item" data-filter="all">All</div>
+                <div class="category-item" data-filter="electronics">Electronics</div>
+                <div class="category-item" data-filter="fashion">Fashion</div>
+                <div class="category-item" data-filter="home">Home & Kitchen</div>
+                <div class="category-item" data-filter="sports">Sports</div>
+            </div>
+        </section>
+
+        <section class="contact-section">
+            <h2>Contact Us</h2>
+            <p>Email: <a href="mailto:info@shopkart.com">info@shopkart.com</a> | Phone: +123 456 7890</p>
+        </section>
+    </main>
+
+    <footer>
+        &copy; 2025 ShopKart. All rights reserved.
+    </footer>
+
+    <script>
+        // Sample product data
+        const products = [
+            {
+                id: 1,
+                name: "Wireless Bluetooth Headphones",
+                price: 199.99,
+                image: "https://via.placeholder.com/300x200?text=Headphones"
+            },
+            {
+                id: 2,
+                name: "Smartwatch Pro",
+                price: 249.50,
+                image: "https://via.placeholder.com/300x200?text=Smartwatch"
+            },
+            {
+                id: 3,
+                name: "Gaming Laptop",
+                price: 1299.00,
+                image: "https://via.placeholder.com/300x200?text=Laptop"
+            },
+            {
+                id: 4,
+                name: "Designer Handbag",
+                price: 89.99,
+                image: "https://via.placeholder.com/300x200?text=Handbag"
+            },
+            {
+                id: 5,
+                name: "Wireless Earbuds",
+                price: 79.99,
+                image: "https://via.placeholder.com/300x200?text=Earbuds"
+            },
+            {
+                id: 6,
+                name: "Coffee Maker",
+                price: 149.99,
+                image: "https://via.placeholder.com/300x200?text=Coffee+Maker"
+            }
+        ];
+
+        // Render products
+        const productsGrid = document.getElementById('productsGrid');
+        function renderProducts(filter = 'all') {
+            productsGrid.innerHTML = '';
+            const filtered = products.filter(p => 
+                filter === 'all' || p.name.toLowerCase().includes(filter.toLowerCase())
+            );
+            filtered.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <img src="${p.image}" alt="${p.name}">
+                    <div class="product-info">
+                        <h3>${p.name}</h3>
+                        <p>${p.price.toFixed(2)} $</p>
+                        <button data-id="${p.id}">Add to Cart</button>
+                    </div>
+                `;
+                productsGrid.appendChild(card);
+            });
+        }
+
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', () => {
+            const term = searchInput.value.trim();
+            renderProducts(term);
+        });
+
+        // Category filter
+        const categoryItems = document.querySelectorAll('.category-item');
+        categoryItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const filter = item.dataset.filter;
+                renderProducts(filter);
+            });
+        });
+
+        // Cart functionality
+        const cartBtn = document.getElementById('cartBtn');
+        const cartCount = document.querySelector('.cart-count');
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function updateCartCount() {
+            const total = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = total;
+        }
+
+        cartBtn.addEventListener('click', () => {
+            // Simple alert for demo; could open a modal/cart page
+            alert(`Cart contains ${cartCount.textContent} item(s).`);
+        });
+
+        // Add to cart handler
+        productsGrid.addEventListener('click', e => {
+            if (e.target.tagName === 'BUTTON') {
+                const productId = parseInt(e.target.dataset.id);
+                const product = products.find(p => p.id === productId);
+                if (!product) return;
+                const existing = cart.find(i => i.id === productId);
+                if (existing) {
+                    existing.quantity += 1;
+                } else {
+                    cart.push({ id: productId, name: product.name, price: product.price, quantity: 1 });
+                }
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartCount();
+                alert(`${product.name} added to cart!`);
+            }
+        });
+
+        // Login functionality (simple demo)
+        const loginBtn = document.getElementById('loginBtn');
+        loginBtn.addEventListener('click', () => {
+            const username = prompt('Username:');
+            const password = prompt('Password:');
+            if (username === 'admin' && password === 'password') {
+                alert('Login successful! Welcome, admin.');
+            } else {
+                alert('Invalid credentials. Please try again.');
+            }
+        });
+
+        // Initial render
+        renderProducts();
+    </script>
+</body>
+</html>
